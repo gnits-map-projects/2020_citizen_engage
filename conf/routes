@@ -1,0 +1,7 @@
+GET     /                   controllers.HomeController.index
+POST    /register           controllers.UserController.addUser
+GET    /getUsers            controllers.UserController.getUsers
+POST   /complaint           controllers.ComplaintController.addComplaint
+GET    /getComplaints       controllers.ComplaintController.getComplaints
+POST    /login              controllers.UserController.login
+POST   /adminlogin          controllers.AdminController.adminlogin
