@@ -56,7 +56,82 @@ public class ComplaintController extends Controller{
 
 
     public CompletionStage<Result> getComplaints() {
-        return complaintRepository.list().thenApplyAsync(complaintStream -> {
+        return complaintRepository.alllist().thenApplyAsync(complaintStream -> {
+            return ok(toJson(complaintStream.collect(Collectors.toList())));
+        }, ec.current());
+    }
+
+    public CompletionStage<Result> getPendingComplaints() {
+        String Status = "Pending";
+        return complaintRepository.conditionlist(Status).thenApplyAsync(complaintStream -> {
+            return ok(toJson(complaintStream.collect(Collectors.toList())));
+        }, ec.current());
+    }
+    public CompletionStage<Result> getClosedComplaints() {
+        String Status = "Closed";
+        return complaintRepository.conditionlist(Status).thenApplyAsync(complaintStream -> {
+            return ok(toJson(complaintStream.collect(Collectors.toList())));
+        }, ec.current());
+    }
+    public CompletionStage<Result> getUserComplaints() {
+        JsonNode j = request().body().asJson();
+        int id = Integer.parseInt(j.get("id").asText());
+        return complaintRepository.allUserList(id).thenApplyAsync(complaintStream -> {
+            return ok(toJson(complaintStream.collect(Collectors.toList())));
+        }, ec.current());
+    }
+    public CompletionStage<Result> getUserClosedComplaints() {
+        JsonNode j = request().body().asJson();
+        int id = Integer.parseInt(j.get("id").asText());
+        String Status = "Closed";
+        return complaintRepository.conditionUserList(id,Status).thenApplyAsync(complaintStream -> {
+            return ok(toJson(complaintStream.collect(Collectors.toList())));
+        }, ec.current());
+    }
+    public CompletionStage<Result> getUserPendingComplaints() {
+        JsonNode j = request().body().asJson();
+        int id = Integer.parseInt(j.get("id").asText());
+        String Status = "Pending";
+        return complaintRepository.conditionUserList(id,Status).thenApplyAsync(complaintStream -> {
+            return ok(toJson(complaintStream.collect(Collectors.toList())));
+        }, ec.current());
+    }
+
+    public CompletionStage<Result> getUserLeaderboard() {
+        return complaintRepository.userleaderboard().thenApplyAsync(complaintStream -> {
+            return ok(toJson(complaintStream.collect(Collectors.toList())));
+        }, ec.current());
+    }
+
+    public CompletionStage<Result> viewAndClose() {
+
+        JsonNode j = request().body().asJson();
+        int Cid = Integer.parseInt(j.get("Cid").asText());
+        String Image = j.get("ClosedImage").asText();
+        String Description = j.get("ClosedDescription").asText();
+        String Status = j.get("Status").asText();
+        String Timestamp = j.get("ClosedAt").asText();
+        return complaintRepository.viewAndClose(Cid,Image,Description,Status,Timestamp).thenApplyAsync(c->{
+            return ok("Closed");
+
+        }).exceptionally(e->{
+            System.out.println(Image);
+            return badRequest("Not a valid complaint");});
+
+    }
+
+    public CompletionStage<Result> getRecentlyCreated() {
+        JsonNode j = request().body().asJson();
+        String logout = j.get("logout").asText();
+        return complaintRepository.recentlycreated(logout).thenApplyAsync(complaintStream -> {
+            return ok(toJson(complaintStream.collect(Collectors.toList())));
+        }, ec.current());
+    }
+
+    public CompletionStage<Result> getRecentlyClosed() {
+        JsonNode j = request().body().asJson();
+        String login = j.get("login").asText();
+        return complaintRepository.recentlyclosed(login).thenApplyAsync(complaintStream -> {
             return ok(toJson(complaintStream.collect(Collectors.toList())));
         }, ec.current());
     }

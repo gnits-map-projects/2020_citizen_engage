@@ -31,49 +31,22 @@ public class AdminController extends Controller{
         return ok();
     }
 
-//    public CompletionStage<Result> addUser() {
-//
-//        User user= Json.fromJson(request().body().asJson(),User.class);
-//
-//        return userRepository.add(user).thenApplyAsync(p -> {
-//
-//            return ok();
-//        }, ec.current());
-//    }
 
-    public CompletionStage<Result> adminlogin() {
+    public CompletionStage<Result> login() {
 
         JsonNode j = request().body().asJson();
 
         String Adminname = j.get("Adminname").asText();
         String Password = j.get("Password").asText();
-//        Admin admin = adminRepository.login(Adminname,Password);
-        return adminRepository.adminlogin(Adminname,Password).thenApplyAsync(us->{
-            //return ok(Json.toJson(us));
-            // return redirect(us.Email);
-            return redirect("/adminhome");
-        }).exceptionally(e->{return ok("Not a valid user");});
-//        if (admin==null) {
-//            return ok("Not a valid admin");
-//        }
-//        else{
-//            return redirect("A valid admin"+admin.Adminname);
-//        }
+        return adminRepository.login(Adminname,Password).thenApplyAsync(us->{
+
+            String s="{\"Adminname\":\""+us.Adminname+"\",\"Password\":\""+us.Password+"\"}";
+
+            return ok(Json.parse(s));
+
+        }).exceptionally(e->{return badRequest("Not a valid user");});
+
     }
 
-
-//    public CompletionStage<Result> getUsers() {
-//        return userRepository.list().thenApplyAsync(userStream -> {
-//            return ok(toJson(userStream.collect(Collectors.toList())));
-//        }, ec.current());
-//    }
-//
-//    public CompletionStage<Result> deleteUser(){
-//        JsonNode requestJson= request().body().asJson();
-//        String Name=requestJson.get("name").asText();
-//        return userRepository.del(Name).thenApplyAsync(p -> {
-//            return ok();
-//        }, ec.current());
-//    }
 
 }
