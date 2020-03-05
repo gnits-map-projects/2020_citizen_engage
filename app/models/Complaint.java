@@ -7,20 +7,32 @@ public class Complaint {
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    public Long Idnumber;
+    public int Cid;
 
-    public String Email;
+    public int Id;
 
     public String Name;
 
-    public String Categeory;
+    public String Email;
 
-    //public BufferedImage Image;
+    public String Category;
 
-    public Long Latitude;
+    public String CreatedImage;
 
-    public Long Longitude;
+    public String ClosedImage;
 
-    public String Description;
+    public String Location;
+
+    public String CreatedDescription;
+
+    public String ClosedDescription;
+
+    public String CreatedAt;
+
+    public String ClosedAt;
+
+    public String Status;
+
+
 
 }

@@ -14,6 +14,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import java.lang.Exception;
+import javax.persistence.NoResultException;
 
 import static java.util.concurrent.CompletableFuture.supplyAsync;
 
@@ -42,6 +43,10 @@ public class JPAUserRepository implements UserRepository {
 
     public CompletionStage<User> login(String EMAIL,String PASSWORD) {
         return supplyAsync(() -> wrap(em -> log(em,EMAIL,PASSWORD)), executionContext);
+    }
+
+    public CompletionStage<String> editProfile(int Id,String Name,String Email,String Mobile) {
+        return supplyAsync(() -> wrap(em -> editProfile(em,Id,Name,Email,Mobile)), executionContext);
     }
 
     @Override
@@ -83,6 +88,36 @@ public class JPAUserRepository implements UserRepository {
 //
 //        return user;
 //    }
+@Override
+public User profile(int Id) throws NoResultException {
+    try{
+        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("defaultPersistenceUnit");
+        EntityManager em= entityManagerFactory.createEntityManager();
+        em.getTransaction().begin();
+
+        User foundUser = em.createQuery("select p from User p where Id=:Id ",User.class).setParameter("Id", Id).getSingleResult();
+        //em.remove(foundPerson);
+        return foundUser;
+    }
+    catch(NoResultException e){
+        return null;
+    }
+
+
+}
+
+    private String editProfile(EntityManager em,int Id,String Name,String Email,String Mobile)
+    {
+      int count = em.createQuery("Update User set Name =:Name,Email= :Email, Mobile = :Mobile where Id=:Id").setParameter("Name",Name).setParameter("Email",Email).setParameter("Mobile",Mobile).setParameter("Id",Id).executeUpdate();
+      int count1 = em.createQuery("Update Complaint set Email= :Email ,Name = :Name where Id=:Id").setParameter("Email",Email).setParameter("Name",Name).setParameter("Id",Id).executeUpdate();
+
+        if(count==0 || count1==0){
+            return null;
+        }
+        else {
+            return "OK";
+        }
+    }
 
     private Stream<User> list(EntityManager em) {
         List<User> users = em.createQuery("select p from User p", User.class).getResultList();

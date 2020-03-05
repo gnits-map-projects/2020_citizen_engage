@@ -14,6 +14,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import java.lang.Exception;
+import javax.persistence.NoResultException;
 
 import static java.util.concurrent.CompletableFuture.supplyAsync;
 
@@ -30,18 +31,26 @@ public class JPAAdminRepository implements AdminRepository {
         this.jpaApi = jpaApi;
         this.executionContext = executionContext;
     }
+
+
     @Override
-    public CompletionStage<Admin> adminlogin(String Adminname, String Password) {
-        return supplyAsync(() -> wrap(em -> adminlog(em, Adminname, Password)), executionContext);
+    public CompletionStage<Admin> login(String Adminname,String Password) {
+        return supplyAsync(() -> wrap(em -> log(em,Adminname,Password)), executionContext);
     }
 
-    private Admin adminlog(EntityManager em, String Adminname, String Password) {
-        Admin admin = em.createQuery("select p from Admin p where p.Adminname= :Adminname and p.Password = :Password", Admin.class).setParameter("Adminname", Adminname).setParameter("Password", Password).getSingleResult();
-        return admin;
-    }
+
 
     private <T> T wrap(Function<EntityManager, T> function) {
         return jpaApi.withTransaction(function);
     }
-}
 
+
+
+    private Admin log(EntityManager em,String Adminname,String Password)
+    {
+        Admin admin = em.createQuery("select p from Admin p where p.Adminname= :Adminname and p.Password = :Password", Admin.class).setParameter("Adminname",Adminname).setParameter("Password",Password).getSingleResult();
+        return admin;
+    }
+
+
+}

@@ -11,11 +11,6 @@ import java.util.stream.Stream;
 @ImplementedBy(JPAAdminRepository.class)
 public interface AdminRepository {
 
-    //CompletionStage<User> add(User user);
+    CompletionStage<Admin> login(String Adminname,String Password);
 
-    //CompletionStage<User> del(String Name);
-
-    CompletionStage<Admin> adminlogin(String Adminname,String Password);
-
-    //CompletionStage<Stream<User>> list();
 }

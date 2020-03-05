@@ -17,5 +17,12 @@ public interface ComplaintRepository {
 
    // CompletionStage<Complaint> log(String EMAIL,String PASSWORD);
 
-    CompletionStage<Stream<Complaint>> list();
+    CompletionStage<Stream<Complaint>> alllist();
+    CompletionStage<Stream<Complaint>> conditionlist(String Status);
+    CompletionStage<Stream<Complaint>> allUserList(int id);
+    CompletionStage<Stream<Complaint>> conditionUserList(int id,String Status);
+    CompletionStage<Stream<Object[]>> userleaderboard();
+    CompletionStage<String> viewAndClose(int Cid,String ClosedImage,String ClosedDescription,String Status,String ClosedAt);
+    CompletionStage<Stream<Complaint>> recentlycreated(String logout);
+    CompletionStage<Stream<Complaint>> recentlyclosed(String login);
 }
