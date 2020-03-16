@@ -40,6 +40,9 @@ public class JPAUserRepository implements UserRepository {
     public CompletionStage<User> del(String Name) {
         return supplyAsync(() -> wrap(em -> delete(em, Name)), executionContext);
     }
+    public CompletionStage<User> profile(int Id) {
+        return supplyAsync(() -> wrap(em -> profile(em, Id)), executionContext);
+    }
 
     public CompletionStage<User> login(String EMAIL,String PASSWORD) {
         return supplyAsync(() -> wrap(em -> log(em,EMAIL,PASSWORD)), executionContext);
@@ -88,23 +91,39 @@ public class JPAUserRepository implements UserRepository {
 //
 //        return user;
 //    }
-@Override
-public User profile(int Id) throws NoResultException {
-    try{
-        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("defaultPersistenceUnit");
-        EntityManager em= entityManagerFactory.createEntityManager();
-        em.getTransaction().begin();
+//@Override
+//    public User profile(int Id) throws NoResultException {
+//        try{
+//            EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("");
+//            EntityManager em= entityManagerFactory.createEntityManager();
+//            em.getTransaction().begin();
+//
+//            User foundUser = em.createQuery("select p from User p where Id=:Id ",User.class).setParameter("Id", Id).getSingleResult();
+//            //em.remove(foundPerson);
+//            return foundUser;
+//        }
+//        catch(NoResultException e){
+//            return null;
+//        }
+//
+//
+//}
+    public User profile(EntityManager em,int Id) throws NoResultException {
+        try{
+//            EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("");
+//            EntityManager em= entityManagerFactory.createEntityManager();
+//            em.getTransaction().begin();
 
-        User foundUser = em.createQuery("select p from User p where Id=:Id ",User.class).setParameter("Id", Id).getSingleResult();
-        //em.remove(foundPerson);
-        return foundUser;
+            User foundUser = em.createQuery("select p from User p where Id=:Id ",User.class).setParameter("Id", Id).getSingleResult();
+            //em.remove(foundPerson);
+            return foundUser;
+        }
+        catch(NoResultException e){
+            return null;
+        }
+
+
     }
-    catch(NoResultException e){
-        return null;
-    }
-
-
-}
 
     private String editProfile(EntityManager em,int Id,String Name,String Email,String Mobile)
     {

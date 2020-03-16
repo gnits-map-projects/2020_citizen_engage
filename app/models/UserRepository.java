@@ -20,5 +20,7 @@ public interface UserRepository {
     CompletionStage<String> editProfile(int Id,String Name,String Email,String Mobile);
 
     CompletionStage<Stream<User>> list();
-    abstract User profile(int Id);
+
+    CompletionStage<User> profile(int Id);
+    //abstract User profile(int Id);
 }
