@@ -14,11 +14,12 @@ body{
 }
 
 .userhomebg{
-  background-color: #f3f5f9;
-  background-image: url("../images/userhome.jpg");
+  /* background-color: #f3f5f9; */
+  /* background-image: url("../images/userhome.png"); */
   background-repeat: no-repeat;
   background-size: cover;
-  background-attachment: fixed;
+  /* background-attachment: fixed; */
+  background-position: center;
 }
 .wrapper{
   display: flex;

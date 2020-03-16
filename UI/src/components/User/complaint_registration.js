@@ -1,13 +1,23 @@
 import React, { Component } from "react";
-//import logo from './components/images/home.jpeg';
-//import './components/images/bgimage.css';
-//import '../home/home.css';
+import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
+import img from '../images/complaint.jpg';
 import Nav from './nav.js';
 
+
+
+const image = {
+    backgroundImage: 'url(' + img + ')',
+    width: "100%",
+    height: '100%',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: '100% 100%',
+  }
 export default class complaint extends Component {
+   
+    
     render() {
         return (
-            <div class="wrapper">
+            <div class="wrapper" style={image}>
                 <Nav/>
                 <div class="main_content">
                     <center>
@@ -40,7 +50,7 @@ export default class complaint extends Component {
 
                 <div className="form-group">
                     <label>Location:</label>
-                    <input type="text" className="form-control" placeholder="Location" />
+                    <input type="text" name="location" className="form-control" placeholder="Location" onChange={this.handleLocationChange}/>
                 </div>
                 {/* <div>
         <h1>{this.state.address}</h1>
@@ -56,7 +66,7 @@ export default class complaint extends Component {
 
                 <div className="form-group">
                     <label>Mobile Number:</label>
-                    <input type="text" className="form-control" placeholder="Enter mobile number" />
+                    <input type="text" name="mobile" className="form-control" placeholder="Enter mobile number" onChange={this.handleMobileChange} />
                 </div>
 
                 <div className="form-group">
@@ -64,7 +74,9 @@ export default class complaint extends Component {
                     {/* <input type="password" className="form-control" placeholder="Enter password" /> */}
                     <textarea cols={33} rows={4}/>
                 </div>
-
+               
+         
+      
                 <button type="submit" className="btn btn-primary btn-block">Submit</button>
                 
             </form>
