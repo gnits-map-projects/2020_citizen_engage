@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import logo from '../images/userhome.jpg';
+//import logo from '../images/userhome.jpg';
 import '../images/bgimage.css';
 import './adminhome.css'
 import Nav from './nav.js';
