@@ -56,24 +56,18 @@ public class UserController extends Controller{
         }).exceptionally(e->{return ok("Not a valid user");});
 
     }
-    public Result profile() {
+    public CompletionStage<Result> profile() {
 
         JsonNode j = request().body().asJson();
-        int id = Integer.parseInt(j.get("Id").asText());
-        System.out.println(id);
+        int Id = Integer.parseInt(j.get("Id").asText());
+        System.out.println(Id);
+        return userRepository.profile(Id).thenApplyAsync(us->{
 
-        /*return personRepository.listuser(username,password).thenApplyAsync(personStream -> {
-            return ok(toJson(personStream.collect(Collectors.toList())));*/
-        User us = userRepository.profile(id);
-
-        if (us == null) {
-
-            return badRequest("Invalid credentials!!");
-        } else {
             String s="{ \"Id\":\""+us.id+"\",\"Name\":\""+us.Name+"\",\"Email\":\""+us.Email+"\",\"Mobile\":\""+us.Mobile+"\"}";
 
             return ok(Json.parse(s));
-        }
+
+        }).exceptionally(e->{return ok("Not a valid user");});
 
     }
 
@@ -83,13 +77,13 @@ public class UserController extends Controller{
         }, ec.current());
     }
 
-    public CompletionStage<Result> deleteUser(){
-        JsonNode requestJson= request().body().asJson();
-        String Name=requestJson.get("name").asText();
-        return userRepository.del(Name).thenApplyAsync(p -> {
-            return ok();
-        }, ec.current());
-    }
+//    public CompletionStage<Result> deleteUser(){
+//        JsonNode requestJson= request().body().asJson();
+//        String Name=requestJson.get("name").asText();
+//        return userRepository.del(Name).thenApplyAsync(p -> {
+//            return ok();
+//        }, ec.current());
+//    }
     public CompletionStage<Result> editProfile() {
 
         JsonNode j = request().body().asJson();
