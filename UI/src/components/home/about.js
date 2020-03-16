@@ -4,16 +4,16 @@ import './home.css';
 import Navigation from './Nav.js';
 import { Container, Row, Col } from 'reactstrap';
 import image from '../images/helpdesk.png';
-import Collapsible from 'react-collapsible';
+// import Collapsible from 'react-collapsible';
 import cx from "classnames";
 import Collapse from "@kunukn/react-collapse";
 import './app.scss';
 
 
 export default class About extends Component{
-    constructor(props) {
-        super(props);
-      }
+    // constructor(props) {
+    //     super(props);
+    //   }
       state = {
         isOpen1: false,
         isOpen2: false,
@@ -38,7 +38,7 @@ export default class About extends Component{
 Using this portal, User can upload image related to the complaint.
 </i> </Col>
 
-                <Col> <img src={ image } />
+                <Col> <img src={ image } alt="Image"/>
                 
                 </Col>
 
